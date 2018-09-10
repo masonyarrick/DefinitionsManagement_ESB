@@ -1,0 +1,1047 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "Defines the messages published by the Definitions Management App Service.",
+    "version" : "1.0.0",
+    "title" : "Definitions Management App Service API",
+    "contact" : {
+      "email" : "mason.yarrick@bhp.com"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "paths" : { },
+  "definitions" : {
+    "WorkDefined" : {
+      "type" : "object",
+      "required" : [ "workMasters", "workflows", "equipmentClasses", "equipment", "materialClasses", "materialLots" ],
+      "properties" : {
+        "workMasters" : {
+          "type" : "object",
+          "required" : [ "added", "changed", "deleted" ],
+          "properties" : {
+            "added" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/WorkMaster"
+              }
+            },
+            "changed" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/WorkMaster"
+              }
+            },
+            "deleted" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/WorkMaster"
+              }
+            }
+          }
+        },
+        "workflows" : {
+          "type" : "object",
+          "required" : [ "added", "changed", "deleted" ],
+          "properties" : {
+            "added" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/WorkflowSpecification"
+              }
+            },
+            "changed" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/WorkflowSpecification"
+              }
+            },
+            "deleted" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/WorkflowSpecification"
+              }
+            }
+          }
+        },
+        "equipmentClasses" : {
+          "type" : "object",
+          "required" : [ "added", "changed", "deleted" ],
+          "properties" : {
+            "added" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/EquipmentClass"
+              }
+            },
+            "changed" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/EquipmentClass"
+              }
+            },
+            "deleted" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/EquipmentClass"
+              }
+            }
+          }
+        },
+        "equipment" : {
+          "type" : "object",
+          "required" : [ "added", "changed", "deleted" ],
+          "properties" : {
+            "added" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/EquipmentItem"
+              }
+            },
+            "changed" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/EquipmentItem"
+              }
+            },
+            "deleted" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/EquipmentItem"
+              }
+            }
+          }
+        },
+        "materialClasses" : {
+          "type" : "object",
+          "required" : [ "added", "changed", "deleted" ],
+          "properties" : {
+            "added" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/MaterialClass"
+              }
+            },
+            "changed" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/MaterialClass"
+              }
+            },
+            "deleted" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/MaterialClass"
+              }
+            }
+          }
+        },
+        "materialLots" : {
+          "type" : "object",
+          "required" : [ "added", "changed", "deleted" ],
+          "properties" : {
+            "added" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/MaterialLot"
+              }
+            },
+            "changed" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/MaterialLot"
+              }
+            },
+            "deleted" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/MaterialLot"
+              }
+            }
+          }
+        }
+      }
+    },
+    "WorkMaster" : {
+      "type" : "object",
+      "required" : [ "id", "version", "workType" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "example" : "ER-EXT"
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "Eastern Ridge Extraction"
+        },
+        "version" : {
+          "type" : "number",
+          "example" : 1
+        },
+        "hierarchyScopeId" : {
+          "type" : "string",
+          "example" : "ER"
+        },
+        "workType" : {
+          "type" : "string",
+          "example" : "Production"
+        },
+        "duration" : {
+          "type" : "number",
+          "example" : 12
+        },
+        "durationUnitOfMeasure" : {
+          "type" : "string",
+          "example" : "Minutes"
+        },
+        "effectiveFrom" : {
+          "type" : "string",
+          "example" : "201808151000"
+        },
+        "effectiveTo" : {
+          "type" : "string",
+          "example" : "201808151000"
+        },
+        "workflowSpecificationId" : {
+          "type" : "string",
+          "example" : "WF-HAULING"
+        },
+        "parameters" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/ParameterSpecification"
+          }
+        },
+        "personnel" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/PersonnelSpecification"
+          }
+        },
+        "equipment" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/EquipmentSpecification"
+          }
+        },
+        "material" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/MaterialSpecification"
+          }
+        }
+      }
+    },
+    "ParameterSpecification" : {
+      "type" : "object",
+      "required" : [ "id", "value" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "example" : "Shift"
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "Which Shift this work can be performed in"
+        },
+        "value" : {
+          "type" : "string",
+          "example" : "Night"
+        },
+        "unitOfMeasure" : {
+          "type" : "string",
+          "example" : "Shift"
+        }
+      }
+    },
+    "PersonnelSpecification" : {
+      "type" : "object",
+      "required" : [ "personnelUse", "quantity", "unitOfMeasure" ],
+      "properties" : {
+        "personnelClassId" : {
+          "type" : "string",
+          "example" : "ER-MC"
+        },
+        "personId" : {
+          "type" : "string",
+          "example" : "2345234234"
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "Mine Controller"
+        },
+        "personnelUse" : {
+          "type" : "string",
+          "example" : "Controlling"
+        },
+        "quantity" : {
+          "type" : "number",
+          "example" : 1
+        },
+        "unitOfmeasure" : {
+          "type" : "string",
+          "example" : "Each"
+        },
+        "properties" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/PersonnelSpecificationProperty"
+          }
+        }
+      }
+    },
+    "PersonnelSpecificationProperty" : {
+      "type" : "object",
+      "required" : [ "id", "value", "valueUnitOfMeasure", "quantity", "quantityUnitOfMeasure" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "example" : "PS-QUAL"
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "Qualification"
+        },
+        "value" : {
+          "type" : "string",
+          "example" : "Certified"
+        },
+        "valueUnitOfMeasure" : {
+          "type" : "string",
+          "example" : "{Studying,Certified}"
+        },
+        "quantity" : {
+          "type" : "number",
+          "example" : 2
+        },
+        "quantityUnitOfMeasure" : {
+          "type" : "string",
+          "example" : "Hours/Piece"
+        }
+      }
+    },
+    "EquipmentSpecification" : {
+      "type" : "object",
+      "required" : [ "equipmentUse", "quantity", "unitOfMeasure" ],
+      "properties" : {
+        "equipmentClassId" : {
+          "type" : "string",
+          "example" : "ER-9400"
+        },
+        "equipmentId" : {
+          "type" : "string",
+          "example" : "EX7015"
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "Excavation"
+        },
+        "equipmentUse" : {
+          "type" : "string",
+          "example" : "Excavating"
+        },
+        "quantity" : {
+          "type" : "number",
+          "example" : 1
+        },
+        "unitOfMeasure" : {
+          "type" : "string",
+          "example" : "Each"
+        },
+        "properties" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/EquipmentSpecificationProperty"
+          }
+        }
+      }
+    },
+    "EquipmentSpecificationProperty" : {
+      "type" : "object",
+      "required" : [ "id", "value", "valueUnitOfMeasure", "quantity", "quantityUnitOfMeasure" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "example" : "WS-EX-MODE"
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "Excavation Mode"
+        },
+        "value" : {
+          "type" : "string",
+          "example" : "Double Benching"
+        },
+        "valueUnitOfMeasure" : {
+          "type" : "string",
+          "example" : "{Double Benching,Flitching}"
+        },
+        "quantity" : {
+          "type" : "number",
+          "example" : 1.5
+        },
+        "quantityUnitOfMeasure" : {
+          "type" : "string",
+          "example" : "Rate Factor"
+        }
+      }
+    },
+    "MaterialSpecification" : {
+      "type" : "object",
+      "required" : [ "materialUse", "quantity", "unitOfMeasure" ],
+      "properties" : {
+        "materialClassId" : {
+          "type" : "string",
+          "example" : "ER-HG"
+        },
+        "materialDefinitionId" : {
+          "type" : "string",
+          "example" : "HG1"
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "Excavated Material"
+        },
+        "materialUse" : {
+          "type" : "string",
+          "example" : "Consumed"
+        },
+        "quantity" : {
+          "type" : "number",
+          "example" : 1000
+        },
+        "quantityUnitOfMeasure" : {
+          "type" : "string",
+          "example" : "Tonnes"
+        },
+        "properties" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/MaterialSpecificationProperty"
+          }
+        }
+      }
+    },
+    "MaterialSpecificationProperty" : {
+      "type" : "object",
+      "required" : [ "id", "value", "valueUnitOfMeasure", "quantity", "quantityUnitOfMeasure" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "example" : "WS-EX-RATE"
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "Excavation Rate"
+        },
+        "value" : {
+          "type" : "string",
+          "example" : "Double Benching"
+        },
+        "valueUnitOfMeasure" : {
+          "type" : "string",
+          "example" : "{Double Benching,Flitching}"
+        },
+        "quantity" : {
+          "type" : "number",
+          "example" : 3000
+        },
+        "quantityUnitOfMeasure" : {
+          "type" : "string",
+          "example" : "Tonnes/Hour"
+        }
+      }
+    },
+    "WorkflowSpecification" : {
+      "type" : "object",
+      "required" : [ "id" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "example" : "WF-EXT"
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "Workflow Specification for Extraction"
+        },
+        "nodes" : {
+          "type" : "array",
+          "minItems" : 1,
+          "items" : {
+            "$ref" : "#/definitions/WorkflowSpecificationNode"
+          }
+        },
+        "connections" : {
+          "type" : "array",
+          "minItems" : 0,
+          "items" : {
+            "$ref" : "#/definitions/WorkflowSpecificationConnection"
+          }
+        }
+      }
+    },
+    "WorkflowSpecificationNode" : {
+      "type" : "object",
+      "required" : [ "id", "workflowSpecificationNodeTypeId" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "example" : "EX-TRAVEL"
+        },
+        "workflowSpecificationNodeTypeId" : {
+          "type" : "string",
+          "example" : "PROC"
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "Travelling to Source"
+        },
+        "workMasterId" : {
+          "type" : "string",
+          "example" : "EX-WM-TRAVEL"
+        },
+        "properties" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/WorkflowSpecificationNodeProperty"
+          }
+        }
+      }
+    },
+    "WorkflowSpecificationNodeProperty" : {
+      "type" : "object",
+      "required" : [ "id", "value", "valueUnitOfMeasure" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "example" : "EX-WM-TRAVEL-SPEED"
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "Speed"
+        },
+        "value" : {
+          "type" : "number",
+          "example" : 60
+        },
+        "valueUnitOfMeasure" : {
+          "type" : "string",
+          "example" : "Kilometres/Hour"
+        }
+      }
+    },
+    "WorkflowSpecificationConnection" : {
+      "type" : "object",
+      "required" : [ "id", "workflowSpecificationConnectionTypeId", "from", "to" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "example" : "EX-WM-TRAVEL-FLOW"
+        },
+        "workflowSpecificationConnectionTypeId" : {
+          "type" : "string",
+          "example" : "BPMN-FLOW"
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "Flows to"
+        },
+        "from" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "example" : "EX-WM-TRAVEL"
+          }
+        },
+        "to" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "example" : "EX-WM-QUEUE"
+          }
+        },
+        "properties" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/WorkflowSpecificationConnectionProperty"
+          }
+        }
+      }
+    },
+    "WorkflowSpecificationConnectionProperty" : {
+      "type" : "object",
+      "required" : [ "id", "value", "valueUnitOfMeasure" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "example" : "EX-WM-TRAVEL-FLOW-REQ"
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "Requirement for progress"
+        },
+        "value" : {
+          "type" : "string",
+          "example" : "Previous Step Completed"
+        },
+        "valueUnitOfMeasure" : {
+          "type" : "string",
+          "example" : "{Previous Step Completed,Previous Step Started}"
+        }
+      }
+    },
+    "WorkflowSpecificationNodeType" : {
+      "type" : "object",
+      "required" : [ "id", "version" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "example" : "PROC"
+        },
+        "version" : {
+          "type" : "number",
+          "example" : 1
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "Process"
+        },
+        "properties" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/WorkflowSpecificationNodeTypeProperty"
+          }
+        }
+      }
+    },
+    "WorkflowSpecificationNodeTypeProperty" : {
+      "type" : "object",
+      "required" : [ "id", "description", "value", "valueUnitOfMeasure" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "example" : "TRIGGERED"
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "Can Be Triggered"
+        },
+        "value" : {
+          "type" : "string",
+          "example" : "true"
+        },
+        "valueUnitOfMeasure" : {
+          "type" : "string",
+          "example" : "{true,false}"
+        }
+      }
+    },
+    "WorkflowSpecificationConnectionType" : {
+      "type" : "object",
+      "required" : [ "id", "version", "fromMultiplicity", "toMultiplicity" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "example" : "TRIG"
+        },
+        "version" : {
+          "type" : "number",
+          "example" : 1
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "Trigger"
+        },
+        "fromMultiplicity" : {
+          "type" : "string",
+          "example" : "0..n"
+        },
+        "toMultiplicity" : {
+          "type" : "string",
+          "example" : "*"
+        },
+        "properties" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/WorkflowSpecificationConnectionTypeProperty"
+          }
+        }
+      }
+    },
+    "WorkflowSpecificationConnectionTypeProperty" : {
+      "type" : "object",
+      "required" : [ "id", "description", "value", "valueUnitOfMeasure" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "example" : "TRIGGERED"
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "Can Be Triggered"
+        },
+        "value" : {
+          "type" : "string",
+          "example" : "true"
+        },
+        "valueUnitOfMeasure" : {
+          "type" : "string",
+          "example" : "{true,false}"
+        }
+      }
+    },
+    "MaterialClass" : {
+      "type" : "object",
+      "required" : [ "id", "version", "hierarchyScopeId", "effectiveFrom", "effectiveTo" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "example" : "HIGH GRADE"
+        },
+        "version" : {
+          "type" : "number",
+          "example" : 1
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "High Grade Ore"
+        },
+        "hierarchyScopeId" : {
+          "type" : "string",
+          "example" : "ER-IP"
+        },
+        "parentClassId" : {
+          "type" : "string",
+          "example" : "IN-SITU"
+        },
+        "effectiveFrom" : {
+          "type" : "string",
+          "example" : "201808151000"
+        },
+        "effectiveTo" : {
+          "type" : "string",
+          "example" : "201808151000"
+        },
+        "properties" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/MaterialClassProperty"
+          }
+        }
+      }
+    },
+    "MaterialClassProperty" : {
+      "type" : "object",
+      "required" : [ "id", "value", "unitOfMeasure" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "example" : "Fe"
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "Iron"
+        },
+        "value" : {
+          "type" : "string",
+          "example" : "62"
+        },
+        "unitOfMeasure" : {
+          "type" : "string",
+          "example" : "percentage"
+        },
+        "properties" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/MaterialClassProperty"
+          }
+        }
+      }
+    },
+    "MaterialLot" : {
+      "type" : "object",
+      "required" : [ "id", "version", "hierarchyScopeId", "effectiveFrom", "effectiveTo" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "example" : "EX7015"
+        },
+        "version" : {
+          "type" : "number",
+          "example" : 1
+        },
+        "materialClassId" : {
+          "type" : "string",
+          "example" : "ER-9400"
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "Excavator EX7015"
+        },
+        "status" : {
+          "type" : "string",
+          "example" : "In Process"
+        },
+        "storageLocationId" : {
+          "type" : "string",
+          "example" : "ER-IP"
+        },
+        "quantity" : {
+          "type" : "number",
+          "example" : 5000
+        },
+        "unitOfMeasure" : {
+          "type" : "string",
+          "example" : "Tonnes"
+        },
+        "parentLotId" : {
+          "type" : "string",
+          "example" : "BENCH-ID"
+        },
+        "effectiveFrom" : {
+          "type" : "string",
+          "example" : "201808151000"
+        },
+        "effectiveTo" : {
+          "type" : "string",
+          "example" : "201808151000"
+        },
+        "properties" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/MaterialLotProperty"
+          }
+        }
+      }
+    },
+    "MaterialLotProperty" : {
+      "type" : "object",
+      "required" : [ "id", "value", "unitOfMeasure" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "example" : "Fe"
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "Iron"
+        },
+        "value" : {
+          "type" : "string",
+          "example" : "62"
+        },
+        "unitOfMeasure" : {
+          "type" : "string",
+          "example" : "percentage"
+        },
+        "properties" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/MaterialLotProperty"
+          }
+        }
+      }
+    },
+    "MaterialDefinition" : {
+      "type" : "object",
+      "required" : [ "id", "version" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "example" : "HG1"
+        },
+        "version" : {
+          "type" : "number",
+          "example" : 1
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "High Grade 1"
+        },
+        "materialClassId" : {
+          "type" : "string",
+          "example" : "ER-HG"
+        },
+        "parentDefinitionId" : {
+          "type" : "string",
+          "example" : "ER-DEF-HG"
+        },
+        "assemblyType" : {
+          "type" : "string",
+          "example" : "Logical"
+        },
+        "assemblyRelationship" : {
+          "type" : "string",
+          "example" : "Permanent"
+        },
+        "effectiveFrom" : {
+          "type" : "string",
+          "example" : "201808151000"
+        },
+        "effectiveTo" : {
+          "type" : "string",
+          "example" : "201808151000"
+        },
+        "properties" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/MaterialDefinitionProperty"
+          }
+        }
+      }
+    },
+    "MaterialDefinitionProperty" : {
+      "type" : "object",
+      "required" : [ "id", "value", "unitOfMeasure" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "example" : "Fe"
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "Iron"
+        },
+        "value" : {
+          "type" : "string",
+          "example" : "62"
+        },
+        "unitOfMeasure" : {
+          "type" : "string",
+          "example" : "percentage"
+        },
+        "properties" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/MaterialDefinitionProperty"
+          }
+        }
+      }
+    },
+    "EquipmentClass" : {
+      "type" : "object",
+      "required" : [ "id", "version", "hierarchyScopeId", "effectiveFrom", "effectiveTo" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "example" : "TRUCKS"
+        },
+        "version" : {
+          "type" : "number",
+          "example" : 1
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "Ore Hauling Trucks"
+        },
+        "hierarchyScopeId" : {
+          "type" : "string",
+          "example" : "ER-IP"
+        },
+        "parentClassId" : {
+          "type" : "string",
+          "example" : "HAULING"
+        },
+        "effectiveFrom" : {
+          "type" : "string",
+          "example" : 201808151000
+        },
+        "effectiveTo" : {
+          "type" : "string",
+          "example" : 201808151000
+        },
+        "properties" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/EquipmentClassProperty"
+          }
+        }
+      }
+    },
+    "EquipmentClassProperty" : {
+      "type" : "object",
+      "required" : [ "propertyKey", "propertyValue", "context", "unitOfMeasure" ],
+      "properties" : {
+        "propertyKey" : {
+          "type" : "string",
+          "example" : "Haul Rate"
+        },
+        "propertyValue" : {
+          "type" : "string",
+          "example" : 9400
+        },
+        "unitOfMeasure" : {
+          "type" : "string",
+          "example" : "Tonnes/Kilometers/Hour"
+        }
+      }
+    },
+    "EquipmentItem" : {
+      "type" : "object",
+      "required" : [ "id", "version", "equipmentLevel", "hierarchyScopeId", "effectiveFrom", "effectiveTo" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "example" : "EX7015"
+        },
+        "version" : {
+          "type" : "number",
+          "example" : 1
+        },
+        "equipmentLevel" : {
+          "type" : "string",
+          "example" : "Work Unit"
+        },
+        "equipmentClassId" : {
+          "type" : "string",
+          "example" : "ER-9400"
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "Excavator EX7015"
+        },
+        "hierarchyScopeId" : {
+          "type" : "string",
+          "example" : "ER-IP"
+        },
+        "effectiveFrom" : {
+          "type" : "string",
+          "example" : 201808151000
+        },
+        "effectiveTo" : {
+          "type" : "string",
+          "example" : 201808151000
+        },
+        "properties" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/EquipmentItemProperty"
+          }
+        }
+      }
+    },
+    "EquipmentItemProperty" : {
+      "type" : "object",
+      "required" : [ "propertyKey", "propertyValue", "context", "unitOfMeasure" ],
+      "properties" : {
+        "propertyKey" : {
+          "type" : "string",
+          "example" : "Dig Rate"
+        },
+        "propertyValue" : {
+          "type" : "string",
+          "example" : 3600
+        },
+        "unitOfMeasure" : {
+          "type" : "string",
+          "example" : "Tonnes/Hour"
+        }
+      }
+    }
+  },
+  "host" : "virtserver.swaggerhub.com",
+  "basePath" : "/BHP7/DefinitionsManagement_ESB/1.0.0",
+  "schemes" : [ "https" ]
+}
