@@ -1,9 +1,9 @@
 {
   "swagger" : "2.0",
   "info" : {
-    "description" : "Defines the messages published by the Definitions Management App Service.",
+    "description" : "Product definition management shall be defined as the collection of activities that manage all of the Level 3 information about the product required for manufacturing, including the product production rules. Product definition information is shared between product production rules, bill of material and bill of resources. The product production rules contain the information used to instruct a manufacturing operation how to produce a product. This may be called a work master (ISA-95 Part 4), general, site, or master recipe (ANSI/ISA-88.00.01 and IEC 61512-1 definitions), standard operating procedure (SOP), standard operating conditions (SOC), routing, or assembly steps based on the production strategy used. The product definition information is made available to other Level 3 functions and to Level 2 functions as required. Product definition management includes management of the distribution of product production rules. Some of the product production rules may exist in Level 2 and Level 1 equipment. When that is the case, downloads of this information shall be coordinated with other manufacturing operations management functions to avoid affecting production. This information may be included as part of operational commands when the download is part of a production execution management activity.",
     "version" : "1.0.0",
-    "title" : "Definitions Management App Service API",
+    "title" : "Definitions Management ESB Contract",
     "contact" : {
       "email" : "mason.yarrick@bhp.com"
     },
@@ -16,6 +16,7 @@
   "definitions" : {
     "WorkDefinedMessage" : {
       "type" : "object",
+      "description" : "The work defined event is raised by the definition management activity to notify when work masters, resource relationship networks and workflow specifications are defined.",
       "required" : [ "workMasters", "workflows", "equipmentClasses", "equipment", "materialClasses", "materialLots" ],
       "properties" : {
         "workMasters" : {
@@ -97,19 +98,19 @@
             "added" : {
               "type" : "array",
               "items" : {
-                "$ref" : "#/definitions/EquipmentItem"
+                "$ref" : "#/definitions/Equipment"
               }
             },
             "changed" : {
               "type" : "array",
               "items" : {
-                "$ref" : "#/definitions/EquipmentItem"
+                "$ref" : "#/definitions/Equipment"
               }
             },
             "deleted" : {
               "type" : "array",
               "items" : {
-                "$ref" : "#/definitions/EquipmentItem"
+                "$ref" : "#/definitions/Equipment"
               }
             }
           }
@@ -166,47 +167,48 @@
     },
     "WorkMaster" : {
       "type" : "object",
+      "description" : "The resources and routing required to perform a unit of work without reference to a specific job order shall be defined as a work master.",
       "required" : [ "id", "version", "workType" ],
       "properties" : {
         "id" : {
           "type" : "string",
+          "description" : "Uniquely identifies the work definition.",
           "example" : "ER-EXT"
         },
         "description" : {
           "type" : "string",
+          "description" : "Contains additional information and descriptions of the work definition.",
           "example" : "Eastern Ridge Extraction"
         },
         "version" : {
           "type" : "number",
+          "description" : "An identification of the version of the work definition.  In cases where there are multiple versions of a work definition, then the version attribute shall contain the additional identification information to differentiate each version.",
           "example" : 1
-        },
-        "hierarchyScopeId" : {
-          "type" : "string",
-          "example" : "ER"
         },
         "workType" : {
           "type" : "string",
+          "description" : "Describes the category of work Required attribute. Defined values are: production, maintenance, quality, inventory, or mixed.  “Mixed” shall be used when the work definition contains resources and routing information required to perform several types of work..",
           "example" : "Production"
         },
         "duration" : {
           "type" : "number",
+          "description" : "Duration, if known.",
           "example" : 12
         },
         "durationUnitOfMeasure" : {
           "type" : "string",
+          "description" : "The units of measure of the duration, if defined.",
           "example" : "Minutes"
         },
         "effectiveFrom" : {
           "type" : "string",
+          "description" : "The timestamp that this Work Master is applicable from.",
           "example" : "201808151000"
         },
         "effectiveTo" : {
           "type" : "string",
+          "description" : "The timestamp that this Work Master is applicable to.",
           "example" : "201808151000"
-        },
-        "workflowSpecificationId" : {
-          "type" : "string",
-          "example" : "WF-HAULING"
         },
         "parameters" : {
           "type" : "array",
@@ -231,57 +233,72 @@
           "items" : {
             "$ref" : "#/definitions/MaterialSpecification"
           }
+        },
+        "workflow" : {
+          "$ref" : "#/definitions/WorkflowSpecification"
         }
       }
     },
     "ParameterSpecification" : {
       "type" : "object",
+      "description" : "An operations segment may have an associated set of zero or more parameter specifications. The parameter specification contains the names and types of the values that may be sent to the Level 3 systems to parameterize the operation. Parameter specifications may contain nested parameter specifications.",
       "required" : [ "id", "value" ],
       "properties" : {
         "id" : {
           "type" : "string",
+          "description" : "Identification of the parameter for a specific segment.",
           "example" : "Shift"
         },
         "description" : {
           "type" : "string",
+          "description" : "Contains additional information of the parameter.",
           "example" : "Which Shift this work can be performed in"
         },
         "value" : {
           "type" : "string",
+          "description" : "The value, set of values, or range of acceptable values.",
           "example" : "Night"
         },
-        "unitOfMeasure" : {
+        "valueUnitOfMeasure" : {
           "type" : "string",
+          "description" : "Unit of measure of the values, if applicable.",
           "example" : "Shift"
         }
       }
     },
     "PersonnelSpecification" : {
       "type" : "object",
+      "description" : "An identification, reference, or correspondence to a personnel capability shall be presented as a personnel specification. A personnel specification usually specifies personnel class but may specify a person. This identifies the specific personnel capability that is associated with the identified operations segment or product segment.",
       "required" : [ "personnelUse", "quantity", "unitOfMeasure" ],
       "properties" : {
         "personnelClassId" : {
           "type" : "string",
+          "description" : "Identifies the associated personnel class or set of personnel classes of the specification for a specific segment.",
           "example" : "ER-MC"
         },
         "personId" : {
           "type" : "string",
+          "description" : "Identifies the associated person or set of persons of the specification for a specific segment.",
           "example" : "2345234234"
         },
         "description" : {
           "type" : "string",
+          "description" : "Contains additional information of the personnel specification.",
           "example" : "Mine Controller"
         },
         "personnelUse" : {
           "type" : "string",
+          "description" : "Defines the expected use of the personnel class or person.",
           "example" : "Controlling"
         },
         "quantity" : {
           "type" : "number",
+          "description" : "Specifies the amount of personnel resources required for the parent segment, if applicable.",
           "example" : 1
         },
         "unitOfmeasure" : {
           "type" : "string",
+          "description" : "The unit of measure of the associated quantity, if applicable.",
           "example" : "Each"
         },
         "properties" : {
@@ -294,60 +311,74 @@
     },
     "PersonnelSpecificationProperty" : {
       "type" : "object",
+      "description" : "Personnel specification properties may contain nested personnel specification properties.",
       "required" : [ "id", "value", "valueUnitOfMeasure", "quantity", "quantityUnitOfMeasure" ],
       "properties" : {
         "id" : {
           "type" : "string",
+          "description" : "An identification of a property of the associated person property or personnel class property for a specific segment.",
           "example" : "PS-QUAL"
         },
         "description" : {
           "type" : "string",
+          "description" : "Contains additional information and descriptions of the personnel specification property definition.",
           "example" : "Qualification"
         },
         "value" : {
           "type" : "string",
+          "description" : "The value, set of values, or range of the property. For example: Apprentice, Journeyman, Master.",
           "example" : "Certified"
         },
         "valueUnitOfMeasure" : {
           "type" : "string",
+          "description" : "The unit of measure of the associated property value, if applicable.",
           "example" : "{Studying,Certified}"
         },
         "quantity" : {
           "type" : "number",
+          "description" : "Specifies the amount of personnel resources required for the parent segment, if applicable.",
           "example" : 2
         },
         "quantityUnitOfMeasure" : {
           "type" : "string",
+          "description" : "The unit of measure of the associated quantity, if applicable.",
           "example" : "Hours/Piece"
         }
       }
     },
     "EquipmentSpecification" : {
       "type" : "object",
+      "description" : "An identification, reference, or correspondence to an equipment capability shall be used as an equipment specification. An equipment specification may specify either an equipment class or a piece of equipment. This identifies the specific equipment capability that is associated with the segment.",
       "required" : [ "equipmentUse", "quantity", "unitOfMeasure" ],
       "properties" : {
         "equipmentClassId" : {
           "type" : "string",
+          "description" : "Identifies the associated equipment class or set of equipment classes of the specification for a specific segment.",
           "example" : "ER-9400"
         },
         "equipmentId" : {
           "type" : "string",
+          "description" : "Identifies the associated equipment or set of equipment of the specification for a specific segment.",
           "example" : "EX7015"
         },
         "description" : {
           "type" : "string",
+          "description" : "Contains additional information and descriptions of the equipment specification.",
           "example" : "Excavation"
         },
         "equipmentUse" : {
           "type" : "string",
+          "description" : "Defines the expected use of the equipment class or equipment.",
           "example" : "Excavating"
         },
         "quantity" : {
           "type" : "number",
+          "description" : "Specifies the amount of equipment resources required for the parent segment, if applicable.",
           "example" : 1
         },
-        "unitOfMeasure" : {
+        "quantityUnitOfMeasure" : {
           "type" : "string",
+          "description" : "The unit of measure of the associated quantity, if applicable.",
           "example" : "Each"
         },
         "properties" : {
@@ -360,60 +391,74 @@
     },
     "EquipmentSpecificationProperty" : {
       "type" : "object",
+      "description" : "Equipment specification properties may contain nested equipment specification properties.",
       "required" : [ "id", "value", "valueUnitOfMeasure", "quantity", "quantityUnitOfMeasure" ],
       "properties" : {
         "id" : {
           "type" : "string",
+          "description" : "An identification of the associated equipment property or equipment class property for a specific segment.",
           "example" : "WS-EX-MODE"
         },
         "description" : {
           "type" : "string",
+          "description" : "Contains additional information and descriptions of the equipment specification property definition.",
           "example" : "Excavation Mode"
         },
         "value" : {
           "type" : "string",
+          "description" : "The value, set of values, or range of the property.  For example: Wet, Dry.",
           "example" : "Double Benching"
         },
         "valueUnitOfMeasure" : {
           "type" : "string",
+          "description" : "The unit of measure of the associated property value, if applicable.",
           "example" : "{Double Benching,Flitching}"
         },
         "quantity" : {
           "type" : "number",
+          "description" : "Specifies the amount of equipment resources required for the parent segment, if applicable.",
           "example" : 1.5
         },
         "quantityUnitOfMeasure" : {
           "type" : "string",
+          "description" : "The unit of measure of the associated quantity, if applicable.",
           "example" : "Rate Factor"
         }
       }
     },
     "MaterialSpecification" : {
       "type" : "object",
+      "description" : "An identification or correspondence to a material capability shall be presented as a material specification. A material specification specifies a material or a material class. This identifies the specific material specification that is associated with the identified product segment.",
       "required" : [ "materialUse", "quantity", "unitOfMeasure" ],
       "properties" : {
         "materialClassId" : {
           "type" : "string",
+          "description" : "Identifies the associated material class or set of material classes of the specification for a specific segment.",
           "example" : "ER-HG"
         },
         "materialDefinitionId" : {
           "type" : "string",
+          "description" : "Identifies the associated material definition or set of material definition of the specification for a specific segment.",
           "example" : "HG1"
         },
         "description" : {
           "type" : "string",
+          "description" : "Contains additional information and descriptions of the material specification.",
           "example" : "Excavated Material"
         },
         "materialUse" : {
           "type" : "string",
+          "description" : "Defines the material use: Material Consumed, Material Produced, or Consumable.",
           "example" : "Consumed"
         },
         "quantity" : {
           "type" : "number",
+          "description" : "Specifies the amount of material resources required for the parent segment, if applicable.",
           "example" : 1000
         },
         "quantityUnitOfMeasure" : {
           "type" : "string",
+          "description" : "The unit of measure of the associated property value, if applicable.",
           "example" : "Tonnes"
         },
         "properties" : {
@@ -426,44 +471,53 @@
     },
     "MaterialSpecificationProperty" : {
       "type" : "object",
+      "description" : "Material specification properties may contain nested material specification properties.",
       "required" : [ "id", "value", "valueUnitOfMeasure", "quantity", "quantityUnitOfMeasure" ],
       "properties" : {
         "id" : {
           "type" : "string",
+          "description" : "An identification of the associated material property for a specific segment.",
           "example" : "WS-EX-RATE"
         },
         "description" : {
           "type" : "string",
+          "description" : "Contains additional information and descriptions of the material specification property.",
           "example" : "Excavation Rate"
         },
         "value" : {
           "type" : "string",
+          "description" : "The value, set of values, or range for the associated property.",
           "example" : "Double Benching"
         },
         "valueUnitOfMeasure" : {
           "type" : "string",
+          "description" : "The unit of measure of the associated property value, if applicable.",
           "example" : "{Double Benching,Flitching}"
         },
         "quantity" : {
           "type" : "number",
+          "description" : "Specifies the amount of material resources required for the parent segment, if applicable.",
           "example" : 3000
         },
         "quantityUnitOfMeasure" : {
           "type" : "string",
+          "description" : "The unit of measure of the associated property value, if applicable.",
           "example" : "Tonnes/Hour"
         }
       }
     },
     "WorkflowSpecification" : {
-      "type" : "object",
+      "description" : "A workflow specification shall be represented as a collection of nodes and connections. Each node is defined by a type definition, and each collection is defined by a type definition. A node may contain a reference to a work master.  Different workflow formats shall be represented as collections of node types and connection types.",
       "required" : [ "id" ],
       "properties" : {
         "id" : {
           "type" : "string",
+          "description" : "Uniquely identifies the workflow specification definition.",
           "example" : "WF-EXT"
         },
         "description" : {
           "type" : "string",
+          "description" : "Contains additional information and descriptions of the workflow specification.",
           "example" : "Workflow Specification for Extraction"
         },
         "nodes" : {
@@ -484,22 +538,27 @@
     },
     "WorkflowSpecificationNode" : {
       "type" : "object",
+      "description" : "A workflow specification node is a reference to a work master, a contained workflow specification, or an entity used in the represented format (such as a decision element, transition condition, or starting point).",
       "required" : [ "id", "workflowSpecificationNodeTypeId" ],
       "properties" : {
         "id" : {
           "type" : "string",
+          "description" : "Uniquely identifies the workflow specification node definition.",
           "example" : "EX-TRAVEL"
         },
         "workflowSpecificationNodeTypeId" : {
           "type" : "string",
+          "description" : "The type of this specification node.",
           "example" : "PROC"
         },
         "description" : {
           "type" : "string",
+          "description" : "Contains additional information and descriptions of the workflow specification node.",
           "example" : "Travelling to Source"
         },
         "workMasterId" : {
           "type" : "string",
+          "description" : "Contains an optional identification of a work master.",
           "example" : "EX-WM-TRAVEL"
         },
         "properties" : {
@@ -512,40 +571,49 @@
     },
     "WorkflowSpecificationNodeProperty" : {
       "type" : "object",
+      "description" : "A property of a workflow specification node shall be defined as a workflow specification node property. Workflow specification node properties may be used to specify the defined properties that can be associated with the specific node type.",
       "required" : [ "id", "value", "valueUnitOfMeasure" ],
       "properties" : {
         "id" : {
           "type" : "string",
+          "description" : "A unique identification of a property.",
           "example" : "EX-WM-TRAVEL-SPEED"
         },
         "description" : {
           "type" : "string",
+          "description" : "Additional information about the property.",
           "example" : "Speed"
         },
         "value" : {
           "type" : "number",
+          "description" : "The default value, set of values, or range of the property.",
           "example" : 60
         },
         "valueUnitOfMeasure" : {
           "type" : "string",
+          "description" : "The unit of measure of the associated property value, if applicable.",
           "example" : "Kilometres/Hour"
         }
       }
     },
     "WorkflowSpecificationConnection" : {
       "type" : "object",
+      "description" : "A workflow specification connection represents a many-to-many link between workflow specification nodes.",
       "required" : [ "id", "workflowSpecificationConnectionTypeId", "from", "to" ],
       "properties" : {
         "id" : {
           "type" : "string",
+          "description" : "Uniquely identifies the workflow specification connection definition.",
           "example" : "EX-WM-TRAVEL-FLOW"
         },
         "workflowSpecificationConnectionTypeId" : {
           "type" : "string",
+          "description" : "The type of this specification connection.",
           "example" : "BPMN-FLOW"
         },
         "description" : {
           "type" : "string",
+          "description" : "Contains additional information and descriptions of the workflow specification connection.",
           "example" : "Flows to"
         },
         "from" : {
@@ -572,40 +640,49 @@
     },
     "WorkflowSpecificationConnectionProperty" : {
       "type" : "object",
+      "description" : "A property of a workflow specification connection shall be defined as a workflow specification connection property.  Workflow specification connection properties may be used to specify the defined properties that can be associated with the specific connection.",
       "required" : [ "id", "value", "valueUnitOfMeasure" ],
       "properties" : {
         "id" : {
           "type" : "string",
+          "description" : "A unique identification of a property.",
           "example" : "EX-WM-TRAVEL-FLOW-REQ"
         },
         "description" : {
           "type" : "string",
+          "description" : "Additional information about the property.",
           "example" : "Requirement for progress"
         },
         "value" : {
           "type" : "string",
+          "description" : "The default value, set of values, or range of the property.",
           "example" : "Previous Step Completed"
         },
         "valueUnitOfMeasure" : {
           "type" : "string",
+          "description" : "The unit of measure of the associated property value, if applicable.",
           "example" : "{Previous Step Completed,Previous Step Started}"
         }
       }
     },
     "WorkflowSpecificationNodeType" : {
       "type" : "object",
+      "description" : "A workflow specification node type defines the properties that can be associated with a specific workflow specification node.",
       "required" : [ "id", "version" ],
       "properties" : {
         "id" : {
           "type" : "string",
+          "description" : "Uniquely identifies the workflow specification node definition.",
           "example" : "PROC"
         },
         "version" : {
           "type" : "number",
+          "description" : "The version of this node type.",
           "example" : 1
         },
         "description" : {
           "type" : "string",
+          "description" : "Contains additional information and descriptions of the workflow specification node.",
           "example" : "Process"
         },
         "properties" : {
@@ -618,48 +695,59 @@
     },
     "WorkflowSpecificationNodeTypeProperty" : {
       "type" : "object",
+      "description" : "A property of a workflow specification node type shall be defined as a workflow specification node type property.  Workflow specification node properties types specify the allowed properties that can be associated with a specific workflow specification node.",
       "required" : [ "id", "description", "value", "valueUnitOfMeasure" ],
       "properties" : {
         "id" : {
           "type" : "string",
+          "description" : "A unique identification of a property.",
           "example" : "TRIGGERED"
         },
         "description" : {
           "type" : "string",
+          "description" : "Additional information about the property.",
           "example" : "Can Be Triggered"
         },
         "value" : {
           "type" : "string",
+          "description" : "The default value, set of values, or range of the property.",
           "example" : "true"
         },
         "valueUnitOfMeasure" : {
           "type" : "string",
+          "description" : "The unit of measure of the associated property value, if applicable.",
           "example" : "{true,false}"
         }
       }
     },
     "WorkflowSpecificationConnectionType" : {
       "type" : "object",
+      "description" : "A workflow specification connection type specifies the permissible information on a connection.",
       "required" : [ "id", "version", "fromMultiplicity", "toMultiplicity" ],
       "properties" : {
         "id" : {
           "type" : "string",
+          "description" : "Uniquely identifies the workflow specification connection definition.",
           "example" : "TRIG"
         },
         "version" : {
           "type" : "number",
+          "description" : "The version of this connection type.",
           "example" : 1
         },
         "description" : {
           "type" : "string",
+          "description" : "Contains additional information and descriptions of the workflow specification connection.",
           "example" : "Trigger"
         },
         "fromMultiplicity" : {
           "type" : "string",
+          "description" : "Defines the multiplicity of the from connection: one, one or more, zero or more, or an allowed range.",
           "example" : "0..n"
         },
         "toMultiplicity" : {
           "type" : "string",
+          "description" : "Defines the multiplicity of the “to” connection: one, one or more, zero or more, or an allowed range.",
           "example" : "*"
         },
         "properties" : {
@@ -672,56 +760,64 @@
     },
     "WorkflowSpecificationConnectionTypeProperty" : {
       "type" : "object",
+      "description" : "A property of a workflow specification connection type shall be defined as a workflow specification connection type property.  Workflow specification connection properties types specify the allowed properties that can be associated with a specific workflow specification connections.",
       "required" : [ "id", "description", "value", "valueUnitOfMeasure" ],
       "properties" : {
         "id" : {
           "type" : "string",
+          "description" : "A unique identification of a property.",
           "example" : "TRIGGERED"
         },
         "description" : {
           "type" : "string",
+          "description" : "Additional information about the property.",
           "example" : "Can Be Triggered"
         },
         "value" : {
           "type" : "string",
+          "description" : "The default value, set of values, or range of the property.",
           "example" : "true"
         },
         "valueUnitOfMeasure" : {
           "type" : "string",
+          "description" : "The unit of measure of the associated property value, if applicable.",
           "example" : "{true,false}"
         }
       }
     },
     "MaterialClass" : {
       "type" : "object",
+      "description" : "A material class is a representation of groupings of material definitions for a definite purpose such as manufacturing operations definition, scheduling, capability and performance. A material class may be tested by the execution of a material test specification.",
       "required" : [ "id", "version", "hierarchyScopeId", "effectiveFrom", "effectiveTo" ],
       "properties" : {
         "id" : {
           "type" : "string",
+          "description" : "A unique identification of a specific material class, within the scope of the information exchanged (production capability, production schedule, production performance, …) The ID shall be used in other parts of the model when the material class needs to be identified, such as the production capability for this material class, or a production response identifying the material class used.",
           "example" : "HIGH GRADE"
         },
         "version" : {
           "type" : "number",
+          "description" : "The version number of this Material Class.",
           "example" : 1
         },
         "description" : {
           "type" : "string",
+          "description" : "Additional information about the material class.",
           "example" : "High Grade Ore"
-        },
-        "hierarchyScopeId" : {
-          "type" : "string",
-          "example" : "ER-IP"
         },
         "parentClassId" : {
           "type" : "string",
+          "description" : "The class that this Material Class belongs to.",
           "example" : "IN-SITU"
         },
         "effectiveFrom" : {
           "type" : "string",
+          "description" : "The timestamp that this Material Class is effective from.",
           "example" : "201808151000"
         },
         "effectiveTo" : {
           "type" : "string",
+          "description" : "The timestamp that this Material Class is effective to.",
           "example" : "201808151000"
         },
         "properties" : {
@@ -734,22 +830,27 @@
     },
     "MaterialClassProperty" : {
       "type" : "object",
+      "description" : "Properties of a material class shall be presented as material class properties. A material class shall be further characterized through zero or more material class properties. A material class property may be tested by the execution of a material test specification. Material class properties may contain nested material class properties. The material class properties often list the nominal, or standard, values for the material. A material property does not have to match a material class property.",
       "required" : [ "id", "value", "unitOfMeasure" ],
       "properties" : {
         "id" : {
           "type" : "string",
+          "description" : "An identification of a specific material class property.",
           "example" : "Fe"
         },
         "description" : {
           "type" : "string",
+          "description" : "Additional information about the material class property.",
           "example" : "Iron"
         },
         "value" : {
           "type" : "string",
+          "description" : "The value, set of values, or range of the property.",
           "example" : "62"
         },
-        "unitOfMeasure" : {
+        "valueUnitOfMeasure" : {
           "type" : "string",
+          "description" : "The unit of measure of the associated property value, if applicable.",
           "example" : "percentage"
         },
         "properties" : {
@@ -762,50 +863,60 @@
     },
     "MaterialLot" : {
       "type" : "object",
+      "description" : "A representation of a uniquely identified specific amount of material, either countable or weighable shall be named as a material lot. A material lot describes the planned or actual total quantity or amount of material available, its current state, and its specific property values. A material lot may be tested by the execution of a material test specification.",
       "required" : [ "id", "version", "hierarchyScopeId", "effectiveFrom", "effectiveTo" ],
       "properties" : {
         "id" : {
           "type" : "string",
-          "example" : "EX7015"
+          "description" : "A unique identification of a specific material lot, within the scope of the information exchanged (production capability, production schedule, production performance, …) The ID shall be used in other parts of the model when the material lot needs to be identified, such as the production capability for this material lot, or a production response identifying the material lot used.",
+          "example" : "Block XYZ"
         },
         "version" : {
           "type" : "number",
+          "description" : "The version number of this instance of the Material Lot.",
           "example" : 1
-        },
-        "materialClassId" : {
-          "type" : "string",
-          "example" : "ER-9400"
-        },
-        "description" : {
-          "type" : "string",
-          "example" : "Excavator EX7015"
         },
         "status" : {
           "type" : "string",
+          "description" : "Status of the material lot. For example, released, approved, blocked, in process, in quality check.",
           "example" : "In Process"
+        },
+        "materialClassId" : {
+          "type" : "string",
+          "example" : "In-Situ"
+        },
+        "materialDefinitionId" : {
+          "type" : "string",
+          "example" : "HG1"
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "Additional information about the material lot.",
+          "example" : "ER Crusher"
         },
         "storageLocationId" : {
           "type" : "string",
-          "example" : "ER-IP"
+          "description" : "An identification of the storage location or a physical location of the material lot.",
+          "example" : "ER-PC"
         },
         "quantity" : {
           "type" : "number",
+          "description" : "The quantity of the material lot.",
           "example" : 5000
         },
-        "unitOfMeasure" : {
+        "quantityUnitOfMeasure" : {
           "type" : "string",
+          "description" : "The unit of measure of the associated quantity, if applicable.",
           "example" : "Tonnes"
-        },
-        "parentLotId" : {
-          "type" : "string",
-          "example" : "BENCH-ID"
         },
         "effectiveFrom" : {
           "type" : "string",
+          "description" : "The timestamp that this state of the Material Lot is effective from.",
           "example" : "201808151000"
         },
         "effectiveTo" : {
           "type" : "string",
+          "description" : "The timestamp that this state of the Material Lot expires.",
           "example" : "201808151000"
         },
         "properties" : {
@@ -818,70 +929,69 @@
     },
     "MaterialLotProperty" : {
       "type" : "object",
-      "required" : [ "id", "value", "unitOfMeasure" ],
+      "description" : "Each material can have unique values for zero or more material lot properties, such as a specific pH value for the specific lot of material, or a specific density for the lot of material. A material lot property may be tested by the execution of a material test specification with results exchanged in a QA test specification result. Material lot properties may contain nested material lot properties.",
+      "required" : [ "id", "description", "value", "valueUnitOfMeasure" ],
       "properties" : {
         "id" : {
           "type" : "string",
-          "example" : "Fe"
+          "description" : "An identification of a specific material class property.",
+          "example" : "DigRate"
         },
         "description" : {
           "type" : "string",
-          "example" : "Iron"
+          "description" : "Additional information about the material class property.",
+          "example" : "Dig Rate"
         },
         "value" : {
           "type" : "string",
-          "example" : "62"
+          "description" : "The value, set of values, or range of the property.",
+          "example" : 3600
         },
-        "unitOfMeasure" : {
+        "valueUnitOfMeasure" : {
           "type" : "string",
-          "example" : "percentage"
-        },
-        "properties" : {
-          "type" : "array",
-          "items" : {
-            "$ref" : "#/definitions/MaterialLotProperty"
-          }
+          "description" : "The unit of measure of the associated property value, if applicable.",
+          "example" : "Tonnes/Hour"
         }
       }
     },
     "MaterialDefinition" : {
       "type" : "object",
+      "description" : "A representation of goods with similar name characteristics for the purpose of manufacturing operations definition, scheduling, capability and performance shall be shown as a material definition. A material definition may be tested by the execution of a material test specification. Any material lot shall be associated with one material definition.",
       "required" : [ "id", "version" ],
       "properties" : {
         "id" : {
           "type" : "string",
+          "description" : "A unique identification of a specific material definition, within the scope of the information exchanged (production capability, production schedule, production performance, …) The ID shall be used in other parts of the model when the material definition needs to be identified, such as the production capability for this material definition, or a production response identifying the material definition used.",
           "example" : "HG1"
         },
         "version" : {
           "type" : "number",
+          "description" : "The version of this Material Definition described in this message.",
           "example" : 1
         },
         "description" : {
           "type" : "string",
+          "description" : "Additional information about the material definition.",
           "example" : "High Grade 1"
         },
         "materialClassId" : {
           "type" : "string",
+          "description" : "The Material Class that this definition describes.",
           "example" : "ER-HG"
         },
         "parentDefinitionId" : {
           "type" : "string",
+          "description" : "The Material Definition that this definition belongs to.",
           "example" : "ER-DEF-HG"
-        },
-        "assemblyType" : {
-          "type" : "string",
-          "example" : "Logical"
-        },
-        "assemblyRelationship" : {
-          "type" : "string",
-          "example" : "Permanent"
         },
         "effectiveFrom" : {
           "type" : "string",
+          "description" : "The timestamp that this Material Definition is applicable from.",
           "example" : "201808151000"
         },
         "effectiveTo" : {
           "type" : "string",
+          "description" : "The timestamp that this Material Definition is applicable to.",
           "example" : "201808151000"
         },
         "properties" : {
@@ -894,22 +1004,27 @@
     },
     "MaterialDefinitionProperty" : {
       "type" : "object",
+      "description" : "Properties of a material definition shall be defined as material definition properties. A material definition shall be further characterized through zero or more material definition properties. A material definition property may be tested by the execution of a material test specification. Material definition properties may contain nested material definition properties.",
       "required" : [ "id", "value", "unitOfMeasure" ],
       "properties" : {
         "id" : {
           "type" : "string",
+          "description" : "An identification of the specific material definition property.",
           "example" : "Fe"
         },
         "description" : {
           "type" : "string",
+          "description" : "Additional information about the material definition property.",
           "example" : "Iron"
         },
         "value" : {
           "type" : "string",
+          "description" : "The value, set of values, or range of the property.",
           "example" : "62"
         },
-        "unitOfMeasure" : {
+        "valueUnitOfMeasure" : {
           "type" : "string",
+          "description" : "The unit of measure of the associated property value, if applicable.",
           "example" : "percentage"
         },
         "properties" : {
@@ -922,35 +1037,43 @@
     },
     "EquipmentClass" : {
       "type" : "object",
+      "description" : "An equipment class is a representation of a grouping of equipment with similar characteristics for a definite purpose such as manufacturing operations definition, scheduling, capability and performance. Any piece of equipment may be a member of zero or more equipment classes. An equipment class may be tested by the execution of an equipment capability test specification.",
       "required" : [ "id", "version", "hierarchyScopeId", "effectiveFrom", "effectiveTo" ],
       "properties" : {
         "id" : {
           "type" : "string",
+          "description" : "A unique identification of a specific equipment class, within the scope of the information exchanged (production capability, production schedule, production performance, …) The ID shall be used in other parts of the model when the equipment class needs to be identified, such as the production capability for this equipment class, or a production response identifying the equipment class used.",
           "example" : "TRUCKS"
         },
         "version" : {
           "type" : "number",
+          "description" : "The version of this Equipment Class described by this message.",
           "example" : 1
         },
         "description" : {
           "type" : "string",
+          "description" : "Additional information about the equipment class.",
           "example" : "Ore Hauling Trucks"
         },
-        "hierarchyScopeId" : {
+        "equipmentLevel" : {
           "type" : "string",
-          "example" : "ER-IP"
+          "description" : "The level of equipment that the Material Class is applicable to.",
+          "example" : "Work Unit"
         },
         "parentClassId" : {
           "type" : "string",
+          "description" : "The class that this Equipment Class belongs to.",
           "example" : "HAULING"
         },
         "effectiveFrom" : {
           "type" : "string",
-          "example" : 201808151000
+          "description" : "The starting time of the applicability of this Equipment Class.",
+          "example" : "201808151000"
         },
         "effectiveTo" : {
           "type" : "string",
-          "example" : 201808151000
+          "description" : "The ending time of the applicability of this Equipment Class.",
+          "example" : "201808151000"
         },
         "properties" : {
           "type" : "array",
@@ -962,80 +1085,107 @@
     },
     "EquipmentClassProperty" : {
       "type" : "object",
-      "required" : [ "propertyKey", "propertyValue", "context", "unitOfMeasure" ],
+      "description" : "Properties of an equipment class shall be listed as equipment class properties. Each may have zero or more recognized properties. An equipment class property may be tested by the execution of an equipment capability test specification.Equipment class properties may contain nested equipment class properties.",
+      "required" : [ "id", "value", "valueUnitOfMeasure" ],
       "properties" : {
-        "propertyKey" : {
+        "id" : {
           "type" : "string",
+          "description" : "An identification of the specific property.",
           "example" : "Haul Rate"
         },
-        "propertyValue" : {
+        "description" : {
           "type" : "string",
-          "example" : 9400
+          "description" : "Additional information about the equipment class property.",
+          "example" : "The rate that the truck can move material through the road network."
         },
-        "unitOfMeasure" : {
+        "value" : {
           "type" : "string",
+          "description" : "The value, set of values, or range of the property.",
+          "example" : "9400"
+        },
+        "valueUnitOfMeasure" : {
+          "type" : "string",
+          "description" : "The unit of measure of the associated property value, if applicable.",
           "example" : "Tonnes/Kilometers/Hour"
         }
       }
     },
-    "EquipmentItem" : {
+    "Equipment" : {
       "type" : "object",
+      "description" : "A representation of the elements of the equipment hierarchy model shown in Part 1 shall be known as equipment. Equipment may be a listing of sites, areas, production units, production lines, work cells, process cells, units, storage zones or storage units. Equipment may be tested by the execution of an equipment capability test specification. Equipment may be made up of other equipment, as presented in the equipment hierarchy model.",
       "required" : [ "id", "version", "equipmentLevel", "hierarchyScopeId", "effectiveFrom", "effectiveTo" ],
       "properties" : {
         "id" : {
           "type" : "string",
+          "description" : "A unique identification of a specific piece of equipment, within the scope of the information exchanged (manufacturing operations definition, scheduling, capability and performance) The equipment ID shall be used in other parts of the model when the equipment needs to be identified, such as the production capability for a piece of equipment, or a production response identifying the equipment used.",
           "example" : "EX7015"
         },
         "version" : {
           "type" : "number",
+          "description" : "The version of this Equipment that this message describes.",
           "example" : 1
         },
         "equipmentLevel" : {
           "type" : "string",
+          "description" : "An identification of the level in the role based equipment hierarchy.",
           "example" : "Work Unit"
         },
         "equipmentClassId" : {
           "type" : "string",
+          "description" : "The type of this Equipment item",
           "example" : "ER-9400"
         },
         "description" : {
           "type" : "string",
+          "description" : "Additional information about the equipment.",
           "example" : "Excavator EX7015"
         },
         "hierarchyScopeId" : {
           "type" : "string",
+          "description" : "The part of the supply chain where the Equipment item exists.",
           "example" : "ER-IP"
         },
         "effectiveFrom" : {
           "type" : "string",
-          "example" : 201808151000
+          "description" : "The timestamp that this Equipment item version is applicable from.",
+          "example" : "201808151000"
         },
         "effectiveTo" : {
           "type" : "string",
-          "example" : 201808151000
+          "description" : "The timestamp that this Equipment item version is applicable to.",
+          "example" : "201808151000"
         },
         "properties" : {
           "type" : "array",
           "items" : {
-            "$ref" : "#/definitions/EquipmentItemProperty"
+            "$ref" : "#/definitions/EquipmentProperty"
           }
         }
       }
     },
-    "EquipmentItemProperty" : {
+    "EquipmentProperty" : {
       "type" : "object",
-      "required" : [ "propertyKey", "propertyValue", "context", "unitOfMeasure" ],
+      "description" : "Properties of equipment shall be listed as equipment properties. An equipment shall have zero or more equipment properties. These specify the current property values of the equipment for the associated equipment class property. Equipment properties may include a unit of measure. An equipment property may be tested by the execution of an equipment capability test specification with results exchanged in an equipment capability test result. Equipment properties may contain nested equipment properties.",
+      "required" : [ "id", "description", "value", "valueUnitOfMeasure" ],
       "properties" : {
-        "propertyKey" : {
+        "id" : {
           "type" : "string",
+          "description" : "An identification of the specific property.",
+          "example" : "DigRate"
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "Additional information about the equipment property.",
           "example" : "Dig Rate"
         },
-        "propertyValue" : {
+        "value" : {
           "type" : "string",
+          "description" : "The value, set of values, or range of the property. The value(s) is assumed to be within the range or set of defined values for the related equipment property.",
           "example" : 3600
         },
-        "unitOfMeasure" : {
+        "valueUnitOfMeasure" : {
           "type" : "string",
+          "description" : "The unit of measure of the associated property value, if applicable.",
           "example" : "Tonnes/Hour"
         }
       }
