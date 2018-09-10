@@ -14,7 +14,7 @@
   },
   "paths" : { },
   "definitions" : {
-    "WorkDefined" : {
+    "WorkDefinedMessage" : {
       "type" : "object",
       "required" : [ "workMasters", "workflows", "equipmentClasses", "equipment", "materialClasses", "materialLots" ],
       "properties" : {
